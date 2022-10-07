@@ -99,20 +99,31 @@ def mean_resizing(x,size):
 x = []
 y = []
 
-pathString = "C:/python_projects/knn_classification_with_numpy/test_data/*.png"
-path = glob.glob(pathString)
+pathCar = "C:/python_projects/knn_classification_with_numpy/cars/*"
+pathPlane = "C:/python_projects/knn_classification_with_numpy/planes/*"
+path1 = glob.glob(pathCar)
+path2 = glob.glob(pathPlane)
 
-for file in path:
+for file in path1:
     image = Image.open(file)
     image = image.convert("L")
     data = np.array(image)
     x.append(data)
+    y.append(0)
+
+for file in path2:
+    image = Image.open(file)
+    image = image.convert("L")
+    data = np.array(image)
+    x.append(data)
+    y.append(1)
 
 
 x = delete_reshaping(x)
 x = mean_resizing(x,64)
 
 x = np.array(x)
+y = np.array(y)
 
-im = Image.fromarray(x[5])
-im.show()
+np.save("x",x)
+np.save("y",y)
