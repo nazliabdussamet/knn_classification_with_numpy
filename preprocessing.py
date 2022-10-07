@@ -64,7 +64,7 @@ def max_resizing(x):
             myRow = []
             for j in range(0, columns, int(columns/64)):
                 myCell = (image[i:i + int(rows/64), j:j + int(columns/64)])
-                max = np.max(myCell)
+                max = np.mean(myCell)
                 myRow.append(max)
 
             resizedData.append(myRow)
@@ -88,8 +88,10 @@ for file in path:
 x = np.array(x)
 y = np.array(y)
 
-x = squared_zero_padding(x)
+x = zero_padding(x)
 x = max_resizing(x)
 
-plt.imshow(x[0])
-plt.show()
+x = np.array(x)
+
+im = Image.fromarray(x[4])
+im.show()
