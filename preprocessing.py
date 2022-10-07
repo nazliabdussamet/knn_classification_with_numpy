@@ -112,7 +112,7 @@ path2 = glob.glob(pathPlane)
 for file in path1:
     image = np.array(Image.open(file))
     if image.ndim < 3:
-        continue
+        image = image
     else:
         image = np.add(image[:, :, 0] * 0.2989, image[:, :, 1] * 0.5870, image[:, :, 2] * 0.1140)
     x.append(image)
@@ -122,7 +122,7 @@ for file in path1:
 for file in path2:
     image = np.array(Image.open(file))
     if image.ndim < 3:
-        continue
+        image = image
     else:
         image = np.add(image[:,:,0]*0.2989, image[:,:,1]*0.5870,image[:,:,2]*0.1140)
     x.append(image)
