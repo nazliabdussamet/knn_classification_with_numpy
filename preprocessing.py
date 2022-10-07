@@ -74,9 +74,10 @@ def delete_reshaping(x):
     return data
 
 
-def mean_resizing(x,size):
+def mean_resizing(x,y,size):
 
     data = []
+    k = 0
     for image in x:
         resizedData = []
         columns = image.shape[1]
@@ -89,8 +90,11 @@ def mean_resizing(x,size):
                 myCell = (image[i:i + int(rows/size), j:j + int(columns/size)])
                 max = np.mean(myCell)
                 myRow.append(max)
-
             resizedData.append(myRow)
+
+        resizedData = [item for sublist in resizedData for item in sublist]
+        resizedData.append(y[k])
+        k += 1
         data.append(resizedData)
 
     return data
@@ -112,7 +116,7 @@ for file in path1:
     else:
         image = np.add(image[:, :, 0] * 0.2989, image[:, :, 1] * 0.5870, image[:, :, 2] * 0.1140)
     x.append(image)
-    y.append(0)
+    y.append(int(0))
 
 
 for file in path2:
@@ -122,14 +126,10 @@ for file in path2:
     else:
         image = np.add(image[:,:,0]*0.2989, image[:,:,1]*0.5870,image[:,:,2]*0.1140)
     x.append(image)
-    y.append(1)
+    y.append(int(1))
 
 
 x = delete_reshaping(x)
-x = mean_resizing(x,64)
+data = mean_resizing(x,y,64)
 
-x = np.array(x)
-y = np.array(y)
-
-np.save("x",x)
-np.save("y",y)
+np.save("data",data)
