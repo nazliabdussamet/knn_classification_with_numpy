@@ -91,7 +91,6 @@ def mean_resizing(x,y,size):
                 max = np.mean(myCell)
                 myRow.append(max)
             resizedData.append(myRow)
-
         resizedData = [item for sublist in resizedData for item in sublist]
         resizedData.append(y[k])
         k += 1
@@ -107,6 +106,7 @@ pathCar = "C:/python_projects/knn_classification_with_numpy/cars/*"
 pathPlane = "C:/python_projects/knn_classification_with_numpy/planes/*"
 path1 = glob.glob(pathCar)
 path2 = glob.glob(pathPlane)
+
 
 
 for file in path1:
@@ -129,7 +129,7 @@ for file in path2:
     y.append(int(1))
 
 
-x = delete_reshaping(x)
+x = zero_padding(x)
 data = mean_resizing(x,y,64)
 
-np.save("data",data)
+np.save("data2",data)

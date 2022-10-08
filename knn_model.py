@@ -17,29 +17,37 @@ def find_neighbors(train, test_row, num_neighbors):
 
     distances.sort(key=lambda tup: tup[0])
 
-    neighbors = []
+    neighbors_list = []
+    for j in num_neighbors:
+        neighbors = []
+        for i in range(j):
+            neighbors.append(distances[i][1])
+        neighbors_list.append(neighbors)
 
-    for i in range(num_neighbors):
-        neighbors.append(distances[i][1])
-    return neighbors
+    return neighbors_list
 
 def find_class(train, test_row, num_neighbors):
 
-    neighbors = np.array(find_neighbors(train, test_row, num_neighbors))
-    ones = np.count_nonzero(neighbors == 1)
+    neighbors_list = find_neighbors(train, test_row, num_neighbors)
 
-    if ones > int((len(neighbors) - 1)  / 2):
-        return 1
-    else:
-        return 0
+    predictions = []
+    for i in range(len(neighbors_list)):
+        my_list2 = np.array(neighbors_list[i])
+        ones = np.sum(my_list2)
 
-data = np.load("data.npy")
+        if ones > int((len(neighbors_list[i]) - 1)  / 2):
+            predictions.append(1)
+        else:
+            predictions.append(0)
+    return predictions
+
+data = np.load("data2.npy")
 
 np.random.shuffle(data)
 
-
-data_train = data[:450,:]
-data_test = data[450:500,:]
+slicer = int(data.shape[0]*0.9)
+data_train = data[:slicer,:]
+data_test = data[slicer:data.shape[0],:]
 
 
 
@@ -47,26 +55,28 @@ data_test = data[450:500,:]
 true_predictions = []
 num_neighbors = []
 
-for k in range(1,30,2):
 
-    predicted_values = []
 
-    for test_row in data_test:
-        prediction = find_class(data_train, test_row, k)
-        predicted_values.append(prediction)
+predicted_values = []
+my_list = range(1,60,2)
+for test_row in data_test:
+    predictions = find_class(data_train, test_row, my_list)
+    predicted_values.append(predictions)
+
+
+k = []
+for i in range(len(predicted_values[0])):
 
     true_prediction = 0
-
-    for i in range(50):
-        if data_test[i,-1] == predicted_values[i]:
+    for j in range(50):
+        if data_test[j,-1] == predicted_values[j][i]:
             true_prediction += 1
         else:
             continue
 
-    true_predictions.append(true_prediction)
-    num_neighbors.append(k)
+    k.append(true_prediction/50)
 
-plt.plot(num_neighbors,true_predictions)
+plt.plot(my_list,k)
 plt.show()
 
 
