@@ -50,19 +50,11 @@ data_train = data[:slicer,:]
 data_test = data[slicer:data.shape[0],:]
 
 
-
-
-true_predictions = []
-num_neighbors = []
-
-
-
 predicted_values = []
 my_list = range(1,60,2)
 for test_row in data_test:
     predictions = find_class(data_train, test_row, my_list)
     predicted_values.append(predictions)
-
 
 k = []
 for i in range(len(predicted_values[0])):
