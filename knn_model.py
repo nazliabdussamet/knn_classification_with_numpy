@@ -68,13 +68,13 @@ k = []
 for i in range(len(predicted_values[0])):
 
     true_prediction = 0
-    for j in range(50):
+    for j in range(len(data_test)):
         if data_test[j,-1] == predicted_values[j][i]:
             true_prediction += 1
         else:
             continue
 
-    k.append(true_prediction/50)
+    k.append(true_prediction/(len(data_test)+1))
 
 plt.plot(my_list,k)
 plt.show()
